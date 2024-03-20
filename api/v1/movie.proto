@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+
+option go_package = "gitlab.com/huseinnashr/xsis-movie-be/api/v1;v1";
+
+service AccountService {
+  rpc ListMovies(ListMovieRequest) returns (ListMovieResponse) {
+    option (google.api.http) = {
+      get: "/movies",
+    };
+  }
+}
+
+message Movie {
+  int64 id = 1; 
+}
+
+message ListMovieRequest {
+  int32 page_size = 1 [(validate.rules).int32.lte = 10];
+  string page_token = 2;
+}
+
+message ListMovieResponse {
+  repeated Movie movies = 1;
+}

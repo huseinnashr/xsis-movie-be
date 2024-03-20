@@ -1,0 +1,46 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: AccountService API
+    version: 0.0.1
+paths:
+    /movies:
+        get:
+            tags:
+                - AccountService
+            operationId: AccountService_ListMovies
+            parameters:
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageToken
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.ListMovieResponse'
+components:
+    schemas:
+        v1.ListMovieResponse:
+            type: object
+            properties:
+                movies:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Movie'
+        v1.Movie:
+            type: object
+            properties:
+                id:
+                    type: string
+tags:
+    - name: AccountService
