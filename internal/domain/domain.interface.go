@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//go:generate mockgen -source=./domain.interface.go -destination=./domain.interface.mock.go -package=domain
 type IMovieUsecase interface {
 	ListMovie(ctx context.Context, size int32, token string) ([]Movie, string, error)
 	CreateMovie(ctx context.Context, param CreateMovieParam) (int64, error)

@@ -61,5 +61,9 @@ func Init(ctx context.Context, config *config.Config) (func(context.Context) err
 }
 
 func Start(ctx context.Context, spanName string, opts ...trace.SpanStartOption) (context.Context, trace.Span) {
+	if tracer == nil {
+		return ctx, trace.SpanFromContext(ctx)
+	}
+
 	return tracer.Start(ctx, spanName, opts...)
 }

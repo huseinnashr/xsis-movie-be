@@ -3,6 +3,7 @@ package account
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/huseinnashr/xsis-movie-be/internal/domain"
 	"github.com/huseinnashr/xsis-movie-be/internal/pkg/pagination"
 	"github.com/huseinnashr/xsis-movie-be/internal/pkg/querybuilder"
@@ -20,7 +21,7 @@ func (r *Repo) ListMovie(ctx context.Context, pageSize int32, pageToken string) 
 	var cursor *ListMovieCursor
 	if pageToken != "" {
 		if err := pagination.DecodeCursor(pageToken, &cursor); err != nil {
-			return nil, "", err
+			return nil, "", errors.BadRequest("cursor can't be decoded", "invalid cursor")
 		}
 	}
 
