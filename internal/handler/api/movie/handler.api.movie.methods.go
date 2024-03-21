@@ -27,7 +27,7 @@ func (h *Handler) ListMovies(ctx context.Context, req *v1.ListMovieRequest) (*v1
 
 	moviepbs := make([]*v1.Movie, len(movies))
 	for i, movie := range movies {
-		moviepbs[i] = h.convertMovieToPB(movie)
+		moviepbs[i] = convertMovieToPB(movie)
 	}
 
 	return &v1.ListMovieResponse{
@@ -63,16 +63,12 @@ func (h *Handler) GetMovie(ctx context.Context, req *v1.GetMovieRequest) (*v1.Mo
 	ctx, span := tracer.Start(ctx, "handler.GetMovie")
 	defer span.End()
 
-	if err := req.Validate(); err != nil {
-		return nil, errors.BadRequest(http.StatusText(http.StatusBadRequest), err.Error())
-	}
-
 	movie, err := h.movieUsecase.GetMovie(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
 
-	return h.convertMovieToPB(movie), nil
+	return convertMovieToPB(movie), nil
 }
 
 func (h *Handler) UpdateMovie(ctx context.Context, req *v1.UpdateMovieRequest) (*v1.UpdateMovieResponse, error) {
@@ -103,10 +99,6 @@ func (h *Handler) DeleteMovie(ctx context.Context, req *v1.DeleteMovieRequest) (
 	ctx, span := tracer.Start(ctx, "handler.DeleteMovie")
 	defer span.End()
 
-	if err := req.Validate(); err != nil {
-		return nil, errors.BadRequest(http.StatusText(http.StatusBadRequest), err.Error())
-	}
-
 	if err := h.movieUsecase.DeleteMovie(ctx, req.GetId()); err != nil {
 		return nil, err
 	}
@@ -116,7 +108,7 @@ func (h *Handler) DeleteMovie(ctx context.Context, req *v1.DeleteMovieRequest) (
 	}, nil
 }
 
-func (h *Handler) convertMovieToPB(movie domain.Movie) *v1.Movie {
+func convertMovieToPB(movie domain.Movie) *v1.Movie {
 	return &v1.Movie{
 		Id:          movie.ID,
 		Title:       movie.Title,
