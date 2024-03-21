@@ -63,18 +63,22 @@ curl --location --request DELETE 'localhost:8080/movies/4'
 ```
 
 ## Test
-### 1. Create Movie
+### Unit Test
+![Test coverage](./files/screenshots/6.%20Test%20Coverage.png)
+
+### E2E test
+#### 1. Create Movie
 ![List Movie Page 1](./files/screenshots/1.%20List%20Page%201.png)
 ![List Movie Page 1](./files/screenshots/1.%20List%20Page%202.png)
 
-### 2. List Movie
+#### 2. List Movie
 ![Create Movie](./files/screenshots/2.%20Create%20Movie.png)
 
-### 3. Get Movie
+#### 3. Get Movie
 ![Get Movie](./files/screenshots/3.%20Get%20Movie.png)
 
-### 4. Update Movie
+#### 4. Update Movie
 ![Update Movie](./files/screenshots/4.%20Update%20Movie.png)
 
-### 5. Delete Movie
+#### 5. Delete Movie
 ![Delete Movie](./files/screenshots/5.%20Delete%20Movie.png)
