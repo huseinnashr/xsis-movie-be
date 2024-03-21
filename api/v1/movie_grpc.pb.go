@@ -19,7 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AccountService_ListMovies_FullMethodName = "/v1.AccountService/ListMovies"
+	AccountService_ListMovies_FullMethodName  = "/v1.AccountService/ListMovies"
+	AccountService_CreateMovie_FullMethodName = "/v1.AccountService/CreateMovie"
+	AccountService_GetMovie_FullMethodName    = "/v1.AccountService/GetMovie"
+	AccountService_UpdateMovie_FullMethodName = "/v1.AccountService/UpdateMovie"
+	AccountService_DeleteMovie_FullMethodName = "/v1.AccountService/DeleteMovie"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -27,6 +31,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountServiceClient interface {
 	ListMovies(ctx context.Context, in *ListMovieRequest, opts ...grpc.CallOption) (*ListMovieResponse, error)
+	CreateMovie(ctx context.Context, in *CreateMovieRequest, opts ...grpc.CallOption) (*CreateMovieResponse, error)
+	GetMovie(ctx context.Context, in *GetMovieRequest, opts ...grpc.CallOption) (*Movie, error)
+	UpdateMovie(ctx context.Context, in *UpdateMovieRequest, opts ...grpc.CallOption) (*UpdateMovieResponse, error)
+	DeleteMovie(ctx context.Context, in *DeleteMovieRequest, opts ...grpc.CallOption) (*DeleteMovieResponse, error)
 }
 
 type accountServiceClient struct {
@@ -46,11 +54,51 @@ func (c *accountServiceClient) ListMovies(ctx context.Context, in *ListMovieRequ
 	return out, nil
 }
 
+func (c *accountServiceClient) CreateMovie(ctx context.Context, in *CreateMovieRequest, opts ...grpc.CallOption) (*CreateMovieResponse, error) {
+	out := new(CreateMovieResponse)
+	err := c.cc.Invoke(ctx, AccountService_CreateMovie_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) GetMovie(ctx context.Context, in *GetMovieRequest, opts ...grpc.CallOption) (*Movie, error) {
+	out := new(Movie)
+	err := c.cc.Invoke(ctx, AccountService_GetMovie_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) UpdateMovie(ctx context.Context, in *UpdateMovieRequest, opts ...grpc.CallOption) (*UpdateMovieResponse, error) {
+	out := new(UpdateMovieResponse)
+	err := c.cc.Invoke(ctx, AccountService_UpdateMovie_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) DeleteMovie(ctx context.Context, in *DeleteMovieRequest, opts ...grpc.CallOption) (*DeleteMovieResponse, error) {
+	out := new(DeleteMovieResponse)
+	err := c.cc.Invoke(ctx, AccountService_DeleteMovie_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility
 type AccountServiceServer interface {
 	ListMovies(context.Context, *ListMovieRequest) (*ListMovieResponse, error)
+	CreateMovie(context.Context, *CreateMovieRequest) (*CreateMovieResponse, error)
+	GetMovie(context.Context, *GetMovieRequest) (*Movie, error)
+	UpdateMovie(context.Context, *UpdateMovieRequest) (*UpdateMovieResponse, error)
+	DeleteMovie(context.Context, *DeleteMovieRequest) (*DeleteMovieResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -60,6 +108,18 @@ type UnimplementedAccountServiceServer struct {
 
 func (UnimplementedAccountServiceServer) ListMovies(context.Context, *ListMovieRequest) (*ListMovieResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMovies not implemented")
+}
+func (UnimplementedAccountServiceServer) CreateMovie(context.Context, *CreateMovieRequest) (*CreateMovieResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMovie not implemented")
+}
+func (UnimplementedAccountServiceServer) GetMovie(context.Context, *GetMovieRequest) (*Movie, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMovie not implemented")
+}
+func (UnimplementedAccountServiceServer) UpdateMovie(context.Context, *UpdateMovieRequest) (*UpdateMovieResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMovie not implemented")
+}
+func (UnimplementedAccountServiceServer) DeleteMovie(context.Context, *DeleteMovieRequest) (*DeleteMovieResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMovie not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 
@@ -92,6 +152,78 @@ func _AccountService_ListMovies_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_CreateMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMovieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).CreateMovie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_CreateMovie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).CreateMovie(ctx, req.(*CreateMovieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_GetMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMovieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetMovie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetMovie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetMovie(ctx, req.(*GetMovieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_UpdateMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMovieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).UpdateMovie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_UpdateMovie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).UpdateMovie(ctx, req.(*UpdateMovieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_DeleteMovie_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMovieRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).DeleteMovie(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_DeleteMovie_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).DeleteMovie(ctx, req.(*DeleteMovieRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +234,22 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListMovies",
 			Handler:    _AccountService_ListMovies_Handler,
+		},
+		{
+			MethodName: "CreateMovie",
+			Handler:    _AccountService_CreateMovie_Handler,
+		},
+		{
+			MethodName: "GetMovie",
+			Handler:    _AccountService_GetMovie_Handler,
+		},
+		{
+			MethodName: "UpdateMovie",
+			Handler:    _AccountService_UpdateMovie_Handler,
+		},
+		{
+			MethodName: "DeleteMovie",
+			Handler:    _AccountService_DeleteMovie_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

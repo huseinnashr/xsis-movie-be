@@ -19,15 +19,27 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationAccountServiceCreateMovie = "/v1.AccountService/CreateMovie"
+const OperationAccountServiceDeleteMovie = "/v1.AccountService/DeleteMovie"
+const OperationAccountServiceGetMovie = "/v1.AccountService/GetMovie"
 const OperationAccountServiceListMovies = "/v1.AccountService/ListMovies"
+const OperationAccountServiceUpdateMovie = "/v1.AccountService/UpdateMovie"
 
 type AccountServiceHTTPServer interface {
+	CreateMovie(context.Context, *CreateMovieRequest) (*CreateMovieResponse, error)
+	DeleteMovie(context.Context, *DeleteMovieRequest) (*DeleteMovieResponse, error)
+	GetMovie(context.Context, *GetMovieRequest) (*Movie, error)
 	ListMovies(context.Context, *ListMovieRequest) (*ListMovieResponse, error)
+	UpdateMovie(context.Context, *UpdateMovieRequest) (*UpdateMovieResponse, error)
 }
 
 func RegisterAccountServiceHTTPServer(s *http.Server, srv AccountServiceHTTPServer) {
 	r := s.Route("/")
 	r.GET("/movies", _AccountService_ListMovies0_HTTP_Handler(srv))
+	r.POST("/movies", _AccountService_CreateMovie0_HTTP_Handler(srv))
+	r.GET("/movies/{id}", _AccountService_GetMovie0_HTTP_Handler(srv))
+	r.PATCH("/movies/{id}", _AccountService_UpdateMovie0_HTTP_Handler(srv))
+	r.DELETE("/movies/{id}", _AccountService_DeleteMovie0_HTTP_Handler(srv))
 }
 
 func _AccountService_ListMovies0_HTTP_Handler(srv AccountServiceHTTPServer) func(ctx http.Context) error {
@@ -49,8 +61,103 @@ func _AccountService_ListMovies0_HTTP_Handler(srv AccountServiceHTTPServer) func
 	}
 }
 
+func _AccountService_CreateMovie0_HTTP_Handler(srv AccountServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateMovieRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAccountServiceCreateMovie)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateMovie(ctx, req.(*CreateMovieRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*CreateMovieResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _AccountService_GetMovie0_HTTP_Handler(srv AccountServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetMovieRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAccountServiceGetMovie)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetMovie(ctx, req.(*GetMovieRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*Movie)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _AccountService_UpdateMovie0_HTTP_Handler(srv AccountServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateMovieRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAccountServiceUpdateMovie)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateMovie(ctx, req.(*UpdateMovieRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateMovieResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _AccountService_DeleteMovie0_HTTP_Handler(srv AccountServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in DeleteMovieRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAccountServiceDeleteMovie)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteMovie(ctx, req.(*DeleteMovieRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*DeleteMovieResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AccountServiceHTTPClient interface {
+	CreateMovie(ctx context.Context, req *CreateMovieRequest, opts ...http.CallOption) (rsp *CreateMovieResponse, err error)
+	DeleteMovie(ctx context.Context, req *DeleteMovieRequest, opts ...http.CallOption) (rsp *DeleteMovieResponse, err error)
+	GetMovie(ctx context.Context, req *GetMovieRequest, opts ...http.CallOption) (rsp *Movie, err error)
 	ListMovies(ctx context.Context, req *ListMovieRequest, opts ...http.CallOption) (rsp *ListMovieResponse, err error)
+	UpdateMovie(ctx context.Context, req *UpdateMovieRequest, opts ...http.CallOption) (rsp *UpdateMovieResponse, err error)
 }
 
 type AccountServiceHTTPClientImpl struct {
@@ -61,6 +168,45 @@ func NewAccountServiceHTTPClient(client *http.Client) AccountServiceHTTPClient {
 	return &AccountServiceHTTPClientImpl{client}
 }
 
+func (c *AccountServiceHTTPClientImpl) CreateMovie(ctx context.Context, in *CreateMovieRequest, opts ...http.CallOption) (*CreateMovieResponse, error) {
+	var out CreateMovieResponse
+	pattern := "/movies"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAccountServiceCreateMovie))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AccountServiceHTTPClientImpl) DeleteMovie(ctx context.Context, in *DeleteMovieRequest, opts ...http.CallOption) (*DeleteMovieResponse, error) {
+	var out DeleteMovieResponse
+	pattern := "/movies/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAccountServiceDeleteMovie))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AccountServiceHTTPClientImpl) GetMovie(ctx context.Context, in *GetMovieRequest, opts ...http.CallOption) (*Movie, error) {
+	var out Movie
+	pattern := "/movies/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAccountServiceGetMovie))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *AccountServiceHTTPClientImpl) ListMovies(ctx context.Context, in *ListMovieRequest, opts ...http.CallOption) (*ListMovieResponse, error) {
 	var out ListMovieResponse
 	pattern := "/movies"
@@ -68,6 +214,19 @@ func (c *AccountServiceHTTPClientImpl) ListMovies(ctx context.Context, in *ListM
 	opts = append(opts, http.Operation(OperationAccountServiceListMovies))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AccountServiceHTTPClientImpl) UpdateMovie(ctx context.Context, in *UpdateMovieRequest, opts ...http.CallOption) (*UpdateMovieResponse, error) {
+	var out UpdateMovieResponse
+	pattern := "/movies/{id}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAccountServiceUpdateMovie))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PATCH", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

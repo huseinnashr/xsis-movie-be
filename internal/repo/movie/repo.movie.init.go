@@ -15,5 +15,4 @@ func New(config *config.Config, sqlDatabase domain.ISQLDatabase) domain.IMovieRe
 		config:      config,
 		sqlDatabase: sqlDatabase,
 	}
-
 }

@@ -28,8 +28,105 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/v1.ListMovieResponse'
+        post:
+            tags:
+                - AccountService
+            operationId: AccountService_CreateMovie
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/v1.CreateMovieRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.CreateMovieResponse'
+    /movies/{id}:
+        get:
+            tags:
+                - AccountService
+            operationId: AccountService_GetMovie
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.Movie'
+        delete:
+            tags:
+                - AccountService
+            operationId: AccountService_DeleteMovie
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.DeleteMovieResponse'
+        patch:
+            tags:
+                - AccountService
+            operationId: AccountService_UpdateMovie
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/v1.UpdateMovieRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UpdateMovieResponse'
 components:
     schemas:
+        v1.CreateMovieRequest:
+            type: object
+            properties:
+                title:
+                    type: string
+                description:
+                    type: string
+                rating:
+                    type: number
+                    format: float
+                image:
+                    type: string
+        v1.CreateMovieResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+        v1.DeleteMovieResponse:
+            type: object
+            properties:
+                message:
+                    type: string
         v1.ListMovieResponse:
             type: object
             properties:
@@ -37,10 +134,44 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/v1.Movie'
+                nextPageToken:
+                    type: string
         v1.Movie:
             type: object
             properties:
                 id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+                rating:
+                    type: number
+                    format: float
+                image:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+        v1.UpdateMovieRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+                rating:
+                    type: number
+                    format: float
+                image:
+                    type: string
+        v1.UpdateMovieResponse:
+            type: object
+            properties:
+                message:
                     type: string
 tags:
     - name: AccountService

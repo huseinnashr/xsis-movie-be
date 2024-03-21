@@ -4,7 +4,6 @@ package v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
-import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
 
 option go_package = "gitlab.com/huseinnashr/xsis-movie-be/api/v1;v1";
@@ -15,17 +14,85 @@ service AccountService {
       get: "/movies",
     };
   }
+
+  rpc CreateMovie(CreateMovieRequest) returns (CreateMovieResponse) {
+    option (google.api.http) = {
+      post: "/movies",
+      body: "*"
+    };
+  }
+
+  rpc GetMovie(GetMovieRequest) returns (Movie) {
+    option (google.api.http) = {
+      get: "/movies/{id}",
+    };
+  }
+
+  rpc UpdateMovie(UpdateMovieRequest) returns (UpdateMovieResponse) {
+    option (google.api.http) = {
+      patch: "/movies/{id}",
+      body: "*"
+    };
+  }
+
+  rpc DeleteMovie(DeleteMovieRequest) returns (DeleteMovieResponse) {
+    option (google.api.http) = {
+      delete: "/movies/{id}",
+    };
+  }
 }
 
 message Movie {
-  int64 id = 1; 
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  float rating = 4;
+  string image = 5;
+  string created_at = 6;
+  string updated_at = 7;
 }
 
 message ListMovieRequest {
-  int32 page_size = 1 [(validate.rules).int32.lte = 10];
+  int32 page_size = 1 [(validate.rules).int32.gt = 0, (validate.rules).int32.lte = 10];
   string page_token = 2;
 }
 
 message ListMovieResponse {
   repeated Movie movies = 1;
+  string next_page_token = 2;
+}
+
+message CreateMovieRequest {
+  string title = 1;
+  string description = 2;
+  float rating = 3 [(validate.rules).float.gte = 0, (validate.rules).float.lte = 10.0];
+  string image = 4;
+}
+
+message CreateMovieResponse {
+  int64 id = 1;
+}
+
+message GetMovieRequest {
+  int64 id = 1;
+}
+
+message UpdateMovieRequest {
+  int64 id = 1;
+  optional string title = 2;
+  optional string description = 3;
+  optional float rating = 4 [(validate.rules).float.gte = 0, (validate.rules).float.lte = 10.0];
+  optional string image = 5;
+}
+
+message UpdateMovieResponse {
+  string message = 1;
+}
+
+message DeleteMovieRequest {
+  int64 id = 1;
+}
+
+message DeleteMovieResponse {
+  string message = 1;
 }

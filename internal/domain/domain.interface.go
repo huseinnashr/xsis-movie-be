@@ -3,14 +3,23 @@ package domain
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 type IMovieUsecase interface {
 	ListMovie(ctx context.Context, size int32, token string) ([]Movie, string, error)
+	CreateMovie(ctx context.Context, param CreateMovieParam) (int64, error)
+	GetMovie(ctx context.Context, id int64) (Movie, error)
+	UpdateMovie(ctx context.Context, param UpdateMovieParam) error
+	DeleteMovie(ctx context.Context, id int64) error
 }
 
 type IMovieRepo interface {
 	ListMovie(ctx context.Context, size int32, token string) ([]Movie, string, error)
+	CreateMovie(ctx context.Context, param CreateMovieParam) (int64, error)
+	GetMovie(ctx context.Context, id int64) (Movie, error)
+	UpdateMovie(ctx context.Context, param UpdateMovieParam) error
+	DeleteMovie(ctx context.Context, id int64) error
 }
 
 type ISQLDatabase interface {
@@ -20,5 +29,26 @@ type ISQLDatabase interface {
 }
 
 type Movie struct {
-	ID int32
+	ID          int64
+	Title       string
+	Description string
+	Rating      float32
+	Image       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+type CreateMovieParam struct {
+	Title       string
+	Description string
+	Rating      float32
+	Image       string
+}
+
+type UpdateMovieParam struct {
+	ID          int64
+	Title       *string
+	Description *string
+	Rating      *float32
+	Image       *string
 }
